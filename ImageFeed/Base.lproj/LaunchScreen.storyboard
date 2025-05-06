@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -13,19 +13,17 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VectorP" translatesAutoresizingMaskIntoConstraints="NO" id="Fpv-8H-8BB">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <rect key="frame" x="182.66666666666666" y="453" width="74.999999999999972" height="78"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <constraints>
-                            <constraint firstItem="Fpv-8H-8BB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6qX-vy-oFn"/>
-                            <constraint firstAttribute="bottom" secondItem="Fpv-8H-8BB" secondAttribute="bottom" id="XcN-kX-KBe"/>
-                            <constraint firstItem="Fpv-8H-8BB" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="mbC-o9-EfL"/>
-                            <constraint firstItem="Fpv-8H-8BB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="u1w-gr-eyG"/>
+                            <constraint firstItem="Fpv-8H-8BB" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="ICG-EC-zhR"/>
+                            <constraint firstItem="Fpv-8H-8BB" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="d3a-jI-2mC"/>
                         </constraints>
                     </view>
                 </viewController>
