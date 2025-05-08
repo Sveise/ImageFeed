@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qdV-ET-w7y">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,6 +9,79 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Profile View Controller-->
+        <scene sceneID="hUD-XH-Mfj">
+            <objects>
+                <viewController id="qdV-ET-w7y" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lic-CX-ROA" userLabel="View">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Kv-rB-nFo">
+                                <rect key="frame" x="15.999999999999986" y="154" width="233.66666666666663" height="27.666666666666657"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_now" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLc-UY-tIM">
+                                <rect key="frame" x="16" y="189.66666666666666" width="127" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="fQM-PK-dXQ">
+                                <rect key="frame" x="16" y="76" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="Brw-qm-Vvb"/>
+                                    <constraint firstAttribute="width" constant="70" id="dnk-lV-wry"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lg1-8Q-Ckh">
+                                <rect key="frame" x="380" y="89" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="SJZ-6Y-iav"/>
+                                    <constraint firstAttribute="width" constant="44" id="mTz-tn-0e3"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="Exit"/>
+                                <connections>
+                                    <action selector="exitButton:" destination="qdV-ET-w7y" eventType="touchUpInside" id="oem-cY-ItR"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LR-qr-zLt">
+                                <rect key="frame" x="16" y="218.66666666666666" width="95" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yLR-vV-ErP"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="YLc-UY-tIM" firstAttribute="top" secondItem="7Kv-rB-nFo" secondAttribute="bottom" constant="8" id="4Uh-Zn-seO"/>
+                            <constraint firstItem="fQM-PK-dXQ" firstAttribute="top" secondItem="lic-CX-ROA" secondAttribute="top" constant="76" id="A6u-iw-CRH"/>
+                            <constraint firstItem="lg1-8Q-Ckh" firstAttribute="top" secondItem="lic-CX-ROA" secondAttribute="top" constant="89" id="Gjq-6o-Zl9"/>
+                            <constraint firstItem="YLc-UY-tIM" firstAttribute="leading" secondItem="yLR-vV-ErP" secondAttribute="leading" constant="16" id="HRX-oh-Quz"/>
+                            <constraint firstItem="yLR-vV-ErP" firstAttribute="trailing" secondItem="lg1-8Q-Ckh" secondAttribute="trailing" constant="16" id="JZR-Kq-QD9"/>
+                            <constraint firstItem="3LR-qr-zLt" firstAttribute="leading" secondItem="yLR-vV-ErP" secondAttribute="leading" constant="16" id="Mf0-ux-NCo"/>
+                            <constraint firstItem="fQM-PK-dXQ" firstAttribute="leading" secondItem="yLR-vV-ErP" secondAttribute="leading" constant="16" id="Niv-Nd-IuK"/>
+                            <constraint firstItem="3LR-qr-zLt" firstAttribute="top" secondItem="YLc-UY-tIM" secondAttribute="bottom" constant="8" id="OKA-4y-sw1"/>
+                            <constraint firstItem="7Kv-rB-nFo" firstAttribute="leading" secondItem="yLR-vV-ErP" secondAttribute="leading" constant="16" id="Qmn-TX-yI4"/>
+                            <constraint firstItem="7Kv-rB-nFo" firstAttribute="top" secondItem="fQM-PK-dXQ" secondAttribute="bottom" constant="8" id="tV8-HX-7OS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emailLabel" destination="YLc-UY-tIM" id="k4m-q2-fqs"/>
+                        <outlet property="exitButton" destination="lg1-8Q-Ckh" id="dAe-7p-iNd"/>
+                        <outlet property="nameLabel" destination="7Kv-rB-nFo" id="4El-ua-8Tz"/>
+                        <outlet property="photoImageView" destination="fQM-PK-dXQ" id="uRa-1N-yCd"/>
+                        <outlet property="textLabel" destination="3LR-qr-zLt" id="BeV-T1-6WR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t6f-kz-VZV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-612.27272727272737" y="-35.146443514644353"/>
+        </scene>
         <!--Images List View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -39,7 +112,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22 августа 2022 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhT-Zs-RDT" userLabel="dataLabel">
-                                                    <rect key="frame" x="24.000000000000007" y="172.33333333333334" width="105.66666666666669" height="15.666666666666657"/>
+                                                    <rect key="frame" x="24.000000000000007" y="171.33333333333334" width="105.66666666666669" height="16.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
@@ -101,6 +174,8 @@
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="Active" width="44" height="44"/>
+        <image name="Exit" width="44" height="44"/>
+        <image name="Photo" width="70" height="70"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
