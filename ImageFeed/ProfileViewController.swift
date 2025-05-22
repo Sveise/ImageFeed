@@ -26,7 +26,7 @@ final class ProfileViewController: UIViewController {
     private let buttonExit = UIButton(type: .system)
     
     private func setupProfileImage() {
-        let profileImage = UIImage(named: "Photo")
+        let profileImage = UIImage(resource: .photo)
         imageView.image = profileImage
         
         view.addSubview(imageView)
@@ -83,7 +83,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupButtonExit() {
-        buttonExit.setImage(UIImage(named: "Exit"), for: .normal)
+        buttonExit.setImage(UIImage(resource: .exit), for: .normal)
         buttonExit.tintColor = .ypRed
         
         view.addSubview(buttonExit)
