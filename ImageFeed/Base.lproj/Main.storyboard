@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -52,15 +53,19 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="2aZ-xN-G1n"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="tintColor" name="YP Black"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Войти"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Войти"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="16"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="M0w-9J-FrQ" kind="show" identifier="ShowWebView" id="IVl-lc-97o"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="54g-oO-KHm"/>
@@ -78,6 +83,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lE7-ea-Q3Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="259" y="1051"/>
+        </scene>
+        <!--Web View View Controller-->
+        <scene sceneID="hNk-Bl-qu6">
+            <objects>
+                <viewController id="M0w-9J-FrQ" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sGp-cZ-Jbv">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKl-6v-MQc">
+                                <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="GHd-Ha-67t"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="aKl-6v-MQc" firstAttribute="top" secondItem="sGp-cZ-Jbv" secondAttribute="top" id="5UI-Vv-7xS"/>
+                            <constraint firstItem="aKl-6v-MQc" firstAttribute="leading" secondItem="sGp-cZ-Jbv" secondAttribute="leading" id="GTV-rE-0R6"/>
+                            <constraint firstAttribute="trailing" secondItem="aKl-6v-MQc" secondAttribute="trailing" id="TUr-I8-Blm"/>
+                            <constraint firstAttribute="bottom" secondItem="aKl-6v-MQc" secondAttribute="bottom" id="cbi-IY-2MO"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="COe-oI-Pft"/>
+                    <connections>
+                        <outlet property="webView" destination="aKl-6v-MQc" id="SKd-pN-6yL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="75H-fU-Y1P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1349" y="1051"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="hUD-XH-Mfj">
@@ -289,5 +329,8 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
