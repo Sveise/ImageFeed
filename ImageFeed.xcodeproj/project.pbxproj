@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		008634252DBA5EB300E8A836 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		008634252DBA5EB300E8A836 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = ImageFeed.app; path = "/Users/svetlanavarenova/projects/ImageFeed/build/Debug-iphoneos/ImageFeed.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,16 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				008634272DBA5EB300E8A836 /* ImageFeed */,
-				008634262DBA5EB300E8A836 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		008634262DBA5EB300E8A836 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				008634252DBA5EB300E8A836 /* ImageFeed.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -108,7 +99,7 @@
 			mainGroup = 0086341C2DBA5EB300E8A836;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 008634262DBA5EB300E8A836 /* Products */;
+			productRefGroup = 0086341C2DBA5EB300E8A836;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
