@@ -5,7 +5,7 @@
 //  Created by Svetlana Varenova on 23.05.2025.
 //
 
-import WebKit
+@preconcurrency import WebKit
 import UIKit
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -26,9 +26,13 @@ final class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+    @IBAction private func didTapBackButton(_ sender: Any) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [], context: nil)
         updateProgress()
     }
     
@@ -53,7 +57,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            print("Ошибка")
+            print("Ошибка. Не удалось создать URLComponents")
             return
         }
         urlComponents.queryItems = [
@@ -68,6 +72,8 @@ final class WebViewViewController: UIViewController {
         }
         let request = URLRequest(url: url)
         webView.load(request)
+        
+        updateProgress()
         }
     }
     
