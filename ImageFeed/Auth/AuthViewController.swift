@@ -8,12 +8,11 @@
 import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ vc : AuthViewController, didAuthenticateWithCode code: String)
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
 }
 
 final class AuthViewController: UIViewController {
-    private let oauth2Service = OAuth2Service.shared
-    private let showWebViewSegueIdentifier = "ShowWebView"
+    private let showWebViewSegueID = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -22,10 +21,10 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSegueIdentifier {
+        if segue.identifier == showWebViewSegueID {
             guard let webViewViewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                assertionFailure("Failed to prepare for \(showWebViewSegueID)")
                 return
             }
             webViewViewController.delegate = self

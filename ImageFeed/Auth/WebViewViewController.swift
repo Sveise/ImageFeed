@@ -22,7 +22,7 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadAuthView()
+        loadAuthRequest()
         webView.navigationDelegate = self
     }
     
@@ -55,7 +55,7 @@ final class WebViewViewController: UIViewController {
     }
     
     
-    private func loadAuthView() {
+    private func loadAuthRequest() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
             print("Ошибка. Не удалось создать URLComponents")
             return
@@ -74,37 +74,37 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
         
         updateProgress()
+    }
+}
+
+extension WebViewViewController: WKNavigationDelegate {
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
         }
     }
     
-    extension WebViewViewController: WKNavigationDelegate {
-        func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationAction: WKNavigationAction,
-            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-        ) {
-            if let code = code(from: navigationAction) {
-                delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-                decisionHandler(.cancel)
-            } else {
-                decisionHandler(.allow)
-            }
-        }
-        
-        private func code(from navigationAction: WKNavigationAction) -> String? {
-            if
-                let url = navigationAction.request.url,
-                let urlComponents = URLComponents(string: url.absoluteString),
-                urlComponents.path == "/oauth/authorize/native",
-                let items = urlComponents.queryItems,
-                let codeItem = items.first(where: { $0.name == "code" })
-            {
-                return codeItem.value
-            } else {
-                return nil
-            }
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        if
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
+        {
+            return codeItem.value
+        } else {
+            return nil
         }
     }
+}
 
 
 enum WebViewConstants {

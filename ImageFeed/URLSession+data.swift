@@ -5,7 +5,7 @@
 //  Created by Svetlana Varenova on 28.05.2025.
 //
 
-import UIKit
+import Foundation
 
 enum NetworkError: Error {
     case httpStatusCode(Int)
@@ -26,7 +26,7 @@ extension URLSession {
         
         let task = dataTask(with: request, completionHandler: { data, response, error in
             if let data, let response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
+                if (200 ..< 300).contains(statusCode) {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))

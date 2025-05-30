@@ -17,11 +17,11 @@ final class OAuth2Service {
             let baseURL = URL(string: "https://unsplash.com"),
             let url = URL(
                 string: "/oauth/token"
-                    + "?client_id=\(Constants.accessKey)"
-                    + "&&client_secret=\(Constants.secretKey)"
-                    + "&&redirect_uri=\(Constants.redirectURI)"
-                    + "&&code=\(code)"
-                    + "&&grant_type=authorization_code",
+                + "?client_id=\(Constants.accessKey)"
+                + "&&client_secret=\(Constants.secretKey)"
+                + "&&redirect_uri=\(Constants.redirectURI)"
+                + "&&code=\(code)"
+                + "&&grant_type=authorization_code",
                 relativeTo: baseURL
             )
         else {
@@ -46,7 +46,7 @@ final class OAuth2Service {
             completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid request"])))
             return
         }
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             if let error {
                 print("Ошибка: \(error)")
                 DispatchQueue.main.async {
@@ -62,20 +62,20 @@ final class OAuth2Service {
                 }
                 return
             }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    self.tokenStorage.token = response.accessToken
-                    DispatchQueue.main.async {
-                        completion(.success(response.accessToken))
-                    }
-                } catch {
-                    print("Ошибка декодирования: \(error)")
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
+            
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                self?.tokenStorage.token = response.accessToken
+                DispatchQueue.main.async {
+                    completion(.success(response.accessToken))
                 }
+            } catch {
+                print("Ошибка декодирования: \(error)")
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
         }
         task.resume()
     }
