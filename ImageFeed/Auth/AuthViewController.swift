@@ -12,14 +12,17 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
+    // MARK: - Properties
     private let showWebViewSegueID = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton()
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueID {
             guard let webViewViewController = segue.destination as? WebViewViewController
@@ -33,6 +36,7 @@ final class AuthViewController: UIViewController {
         }
     }
     
+    // MARK: - Private methods
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(resource: .chevronBackward)
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(resource: .chevronBackward)
