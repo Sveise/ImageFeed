@@ -9,6 +9,14 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    // MARK: - Properties
+    private let imageView = UIImageView()
+    private let labelName = UILabel()
+    private let labelLogin = UILabel()
+    private let labelDescription = UILabel()
+    private let buttonExit = UIButton(type: .system)
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -18,13 +26,8 @@ final class ProfileViewController: UIViewController {
         setupDescriptionLabel()
         setupButtonExit()
     }
-    
-    private let imageView = UIImageView()
-    private let labelName = UILabel()
-    private let labelLogin = UILabel()
-    private let labelDescription = UILabel()
-    private let buttonExit = UIButton(type: .system)
-    
+
+    // MARK: - Private methods
     private func setupProfileImage() {
         let profileImage = UIImage(resource: .photo)
         imageView.image = profileImage
