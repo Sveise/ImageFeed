@@ -7,10 +7,17 @@
 
 import UIKit
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     private let tokenStorage = OAuth2TokenStorage()
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    private let session = URLSession.shared
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard
@@ -25,6 +32,7 @@ final class OAuth2Service {
                 relativeTo: baseURL
             )
         else {
+            assertionFailure("Failed to create URL")
             return nil
         }
         var request = URLRequest(url: url)
@@ -41,14 +49,30 @@ final class OAuth2Service {
     }
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        print("➡️ fetchOAuthToken called with code: \(code)")
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            print("Повторный код, запрос не отправляется")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
+        
         guard let request = makeOAuthTokenRequest(code: code) else {
             print("Ошибка. Запрос не создан")
             completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid request"])))
             return
         }
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        
+        UIBlockingProgressHUD.show()
+        
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
+            }
             if let error {
-                print("Ошибка: \(error)")
+                print("Ошибка сети: \(error)")
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
@@ -77,6 +101,7 @@ final class OAuth2Service {
                 }
             }
         }
+        self.task = task
         task.resume()
     }
 }

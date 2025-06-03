@@ -15,6 +15,7 @@ final class OAuth2TokenStorage {
             UserDefaults.standard.string(forKey: tokenKey)
         } set {
             UserDefaults.standard.set(newValue, forKey: tokenKey)
+            print("✅ Токен сохранён: \(String(describing: newValue))")
         }
     }
 }
