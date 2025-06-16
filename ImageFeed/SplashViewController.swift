@@ -33,7 +33,7 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .ypBlack
         setupLogo()
         
         DispatchQueue.main.async {
@@ -47,6 +47,7 @@ final class SplashViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
     
+    // MARK: - Private methods
     private func handleAuthorizationFlow() {
         guard !isFetchingToken, !hasSwitched else { return }
         
@@ -74,7 +75,6 @@ final class SplashViewController: UIViewController {
         present(navigationController, animated: true)
     }
     
-    // MARK: - Private methods
     private func setupLogo() {
         view.addSubview(logoImageView)
         
@@ -130,6 +130,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .failure(let error):
                 print("[SplashViewController]: Ошибка получения токена - \(error.localizedDescription)")
                 self.presentErrorAlert()
+                self.presentAuthIfNeeded()
             }
         }
     }
@@ -138,11 +139,11 @@ extension SplashViewController: AuthViewControllerDelegate {
         UIBlockingProgressHUD.show()
         profileService.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
-                UIBlockingProgressHUD.dismiss()
                 guard let self else { return }
                 switch result {
                 case .success(let profile):
                     ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
+                    UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
                     print("Не удалось получить профиль: \(result)")
