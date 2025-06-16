@@ -70,7 +70,6 @@ final class OAuth2Service {
         
         task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
-                UIBlockingProgressHUD.dismiss()
             }
             switch result {
             case .success(let response):

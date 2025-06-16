@@ -118,10 +118,9 @@ extension SplashViewController: AuthViewControllerDelegate {
     private func fetchOAuthToken(_ code: String) {
         guard !isFetchingToken else { return }
         self.isFetchingToken = true
-        
+        UIBlockingProgressHUD.show()
         oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
             guard let self else { return }
-            UIBlockingProgressHUD.dismiss()
             isFetchingToken = false
             switch result {
             case .success(let token):
@@ -143,12 +142,12 @@ extension SplashViewController: AuthViewControllerDelegate {
                 switch result {
                 case .success(let profile):
                     ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
-                    UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
                     print("Не удалось получить профиль: \(result)")
                 }
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
 }

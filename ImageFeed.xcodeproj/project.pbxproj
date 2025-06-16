@@ -13,7 +13,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		002F33E72DE9A838009AF546 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = ImageFeed.app; path = "/Users/svetlanavarenova/projects/ImageFeed/build/Debug-iphoneos/ImageFeed.app"; sourceTree = "<absolute>"; };
+		001926E02E00BDBA0071C57A /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -55,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				008634272DBA5EB300E8A836 /* ImageFeed */,
+				001926E02E00BDBA0071C57A /* ImageFeed.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,7 +84,7 @@
 				0019264A2DFC69250071C57A /* SwiftKeychainWrapper */,
 			);
 			productName = ImageFeed;
-			productReference = 002F33E72DE9A838009AF546 /* ImageFeed.app */;
+			productReference = 001926E02E00BDBA0071C57A /* ImageFeed.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

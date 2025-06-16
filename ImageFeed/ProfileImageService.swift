@@ -44,7 +44,6 @@ final class ProfileImageService {
                     self.avaterURL = imageURL
                     print("[ProfileImageService]: Success - получен URL аватара: \(imageURL)")
                     completion(.success(imageURL))
-                    
                     NotificationCenter.default.post(name: ProfileImageService.didChangeNotification, object: self, userInfo: ["URL": imageURL])
                 case .failure(let error):
                     print("[ProfileImageService]: FetchImageError - \(error.localizedDescription), параметры: username = \(username)")
