@@ -14,6 +14,7 @@ enum AuthServiceError: Error {
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
+    
     private let tokenStorage = OAuth2TokenStorage()
     private var task: URLSessionTask?
     private var lastCode: String?
@@ -49,10 +50,10 @@ final class OAuth2Service {
     }
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        print("➡️ fetchOAuthToken called with code: \(code)")
+        print("[OAuth2Service]: fetchOAuthToken called with code: \(code)")
         assert(Thread.isMainThread)
         guard lastCode != code else {
-            print("Повторный код, запрос не отправляется")
+            print("[OAuth2Service]: DuplicateRequestError - попытка повторной отправки кода: \(code)")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -60,48 +61,27 @@ final class OAuth2Service {
         lastCode = code
         
         guard let request = makeOAuthTokenRequest(code: code) else {
-            print("Ошибка. Запрос не создан")
+            print("[OAuth2Service]: RequestCreationError - не удалось создать URLRequest, код: \(code)")
             completion(.failure(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid request"])))
             return
         }
         
         UIBlockingProgressHUD.show()
         
-        let task = session.dataTask(with: request) { [weak self] data, response, error in
+        task = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 UIBlockingProgressHUD.dismiss()
             }
-            if let error {
-                print("Ошибка сети: \(error)")
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-                return
-            }
-            
-            guard let data else {
-                print("Ошибка. Нет данных")
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "OAuth2Service", code: -2, userInfo: [NSLocalizedDescriptionKey: "No data"])))
-                }
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+            switch result {
+            case .success(let response):
+                print("[OAuth2Service]: Success - токен успешно получен")
                 self?.tokenStorage.token = response.accessToken
-                DispatchQueue.main.async {
-                    completion(.success(response.accessToken))
-                }
-            } catch {
-                print("Ошибка декодирования: \(error)")
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+                completion(.success(response.accessToken))
+            case .failure(let error):
+                print("[OAuth2Service]: TokenRequestError - \(error.localizedDescription), код: \(code)")
+                completion(.failure(error))
             }
         }
-        self.task = task
-        task.resume()
+        task?.resume()
     }
 }

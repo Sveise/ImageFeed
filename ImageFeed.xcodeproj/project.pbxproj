@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001926482DFC12DC0071C57A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 001926472DFC12DC0071C57A /* Kingfisher */; };
+		0019264B2DFC69250071C57A /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 0019264A2DFC69250071C57A /* SwiftKeychainWrapper */; };
 		002F34122DEA2E5F009AF546 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 002F34112DEA2E5F009AF546 /* ProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		002F33E72DE9A838009AF546 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		002F33E72DE9A838009AF546 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = ImageFeed.app; path = "/Users/svetlanavarenova/projects/ImageFeed/build/Debug-iphoneos/ImageFeed.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -40,7 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				001926482DFC12DC0071C57A /* Kingfisher in Frameworks */,
 				002F34122DEA2E5F009AF546 /* ProgressHUD in Frameworks */,
+				0019264B2DFC69250071C57A /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,7 +55,6 @@
 			isa = PBXGroup;
 			children = (
 				008634272DBA5EB300E8A836 /* ImageFeed */,
-				002F33E72DE9A838009AF546 /* ImageFeed.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,6 +79,8 @@
 			name = ImageFeed;
 			packageProductDependencies = (
 				002F34112DEA2E5F009AF546 /* ProgressHUD */,
+				001926472DFC12DC0071C57A /* Kingfisher */,
+				0019264A2DFC69250071C57A /* SwiftKeychainWrapper */,
 			);
 			productName = ImageFeed;
 			productReference = 002F33E72DE9A838009AF546 /* ImageFeed.app */;
@@ -107,6 +112,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				002F34102DEA2E5F009AF546 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				001926462DFC12DC0071C57A /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				001926492DFC69250071C57A /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0086341C2DBA5EB300E8A836;
@@ -340,6 +347,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		001926462DFC12DC0071C57A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.2;
+			};
+		};
+		001926492DFC69250071C57A /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
 		002F34102DEA2E5F009AF546 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
@@ -351,6 +374,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		001926472DFC12DC0071C57A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 001926462DFC12DC0071C57A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		0019264A2DFC69250071C57A /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 001926492DFC69250071C57A /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
+		};
 		002F34112DEA2E5F009AF546 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 002F34102DEA2E5F009AF546 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
