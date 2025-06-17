@@ -24,10 +24,10 @@ final class ProfileImageService {
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
     private init() {}
-    private(set) var avaterURL: String?
+    private(set) var avatarURL: String?
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
-    private let baseURL = URL(string: "https://api.unsplash.com")!
+    private let baseURL = URL(string: "https://api.unsplash.com")
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         task?.cancel()
@@ -41,7 +41,7 @@ final class ProfileImageService {
                 switch result {
                 case .success(let userResult):
                     let imageURL = userResult.profileImage.small
-                    self.avaterURL = imageURL
+                    self.avatarURL = imageURL
                     print("[ProfileImageService]: Success - получен URL аватара: \(imageURL)")
                     completion(.success(imageURL))
                     NotificationCenter.default.post(name: ProfileImageService.didChangeNotification, object: self, userInfo: ["URL": imageURL])
@@ -55,6 +55,9 @@ final class ProfileImageService {
     }
     
     private func makeRequest(username: String) -> URLRequest {
+        guard let baseURL = baseURL else {
+            fatalError("BaseURL is nil")
+        }
         let url = baseURL.appendingPathComponent("users/\(username)")
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

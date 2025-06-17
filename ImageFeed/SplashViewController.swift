@@ -53,7 +53,7 @@ final class SplashViewController: UIViewController {
         
         if let token = KeychainWrapper.standard.string(forKey: tokenKey) {
             print("Есть токен:\(token)")
-            switchToTabBarController()
+            fetchProfile(token: token)
         } else {
             presentAuthIfNeeded()
         }
@@ -98,7 +98,7 @@ final class SplashViewController: UIViewController {
     }
     
     private func presentErrorAlert() {
-        let alert = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default))
         present(alert, animated: true)
     }
@@ -141,13 +141,26 @@ extension SplashViewController: AuthViewControllerDelegate {
                 guard let self else { return }
                 switch result {
                 case .success(let profile):
-                    ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
-                    self.switchToTabBarController()
+                    print("Профиль получен: \(profile)")
+                    ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { result in
+                        DispatchQueue.main.async {
+                            UIBlockingProgressHUD.dismiss()
+                            
+                            switch result {
+                            case .success(let url):
+                                print("URL аватара: \(url)")
+                            case .failure(let error):
+                                print("Ошибка загрузки аватара: \(error.localizedDescription)")
+                            }
+                            self.switchToTabBarController()
+                        }
+                    }
                 case .failure:
+                    UIBlockingProgressHUD.dismiss()
                     print("Не удалось получить профиль: \(result)")
+                    self.presentErrorAlert()
                 }
             }
-            UIBlockingProgressHUD.dismiss()
         }
     }
 }

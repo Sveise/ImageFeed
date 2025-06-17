@@ -36,7 +36,7 @@ final class ProfileService {
     private var task: URLSessionTask?
     private(set) var profile: Profile?
     private let urlSession = URLSession.shared
-    private let baseURL = URL(string: "https://api.unsplash.com")!
+    private let baseURL = URL(string: "https://api.unsplash.com")
     
     private init() {}
     
@@ -62,7 +62,11 @@ final class ProfileService {
     }
     
     private func makeRequest(token: String) -> URLRequest {
-        let url = baseURL.appendingPathComponent("/me")
+        guard let baseURL = baseURL else {
+            fatalError("BaseURL is nil")
+        }
+        
+        let url = baseURL.appendingPathComponent("me")
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
