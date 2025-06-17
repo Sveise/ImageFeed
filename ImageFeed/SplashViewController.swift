@@ -96,12 +96,6 @@ final class SplashViewController: UIViewController {
         let tabBarController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-    
-    private func presentErrorAlert() {
-        let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default))
-        present(alert, animated: true)
-    }
 }
 
 // MARK: - AuthViewControllerDelegate
@@ -128,7 +122,12 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure(let error):
                 print("[SplashViewController]: Ошибка получения токена - \(error.localizedDescription)")
-                self.presentErrorAlert()
+                
+                if let navController = self.presentedViewController as? UINavigationController,
+                   let authVC = navController.viewControllers.first as? AuthViewController {
+                    authVC.showAuthErrorAlert()
+                }
+                
                 self.presentAuthIfNeeded()
             }
         }
@@ -158,7 +157,6 @@ extension SplashViewController: AuthViewControllerDelegate {
                 case .failure:
                     UIBlockingProgressHUD.dismiss()
                     print("Не удалось получить профиль: \(result)")
-                    self.presentErrorAlert()
                 }
             }
         }
