@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import Network
 
 final class SplashViewController: UIViewController {
     
@@ -72,8 +73,31 @@ final class SplashViewController: UIViewController {
         authVC.delegate = self
         let navigationController = UINavigationController(rootViewController: authVC)
         navigationController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true)
+        present(navigationController, animated: true) {
+            self.checkInternetConnection { isConnected in
+                guard !isConnected,
+                      let navController = self.presentedViewController as? UINavigationController,
+                      let authVC = navController.viewControllers.first as? AuthViewController
+                else { return }
+                authVC.showAuthErrorAlert()
+            }
+        }
     }
+    
+    private func checkInternetConnection(completion: @escaping (Bool) -> Void) {
+        let monitor = NWPathMonitor()
+        let queue = DispatchQueue(label: "NetworkMonitor")
+        
+        monitor.pathUpdateHandler = { path in
+            monitor.cancel()
+            DispatchQueue.main.async {
+                completion(path.status == .satisfied)
+            }
+        }
+        
+        monitor.start(queue: queue)
+    }
+    
     
     private func setupLogo() {
         view.addSubview(logoImageView)
@@ -122,12 +146,10 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure(let error):
                 print("[SplashViewController]: Ошибка получения токена - \(error.localizedDescription)")
-                
                 if let navController = self.presentedViewController as? UINavigationController,
                    let authVC = navController.viewControllers.first as? AuthViewController {
                     authVC.showAuthErrorAlert()
                 }
-                
                 self.presentAuthIfNeeded()
             }
         }
