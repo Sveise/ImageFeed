@@ -29,16 +29,43 @@ extension URLSession {
                 if (200 ..< 300).contains(statusCode) {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
+                    print("[dataTask]: NetworkError.httpStatusCode - код ошибки \(statusCode), URL: \(request.url?.absoluteString ?? "")")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error {
-                print("URLRequest error: \(error)")
+                print("[dataTask]: NetworkError.urlRequestError - \(error.localizedDescription), URL: \(request.url?.absoluteString ?? "")")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
+                print("[dataTask]: NetworkError.urlSessionError - неизвестная ошибка сессии, URL: \(request.url?.absoluteString ?? "")")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
         
+        return task
+    }
+    
+    func objectTask<T: Decodable>(
+        for request: URLRequest,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionTask {
+        let decoder = JSONDecoder()
+        
+        let task = data(for: request) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decodedObject = try decoder.decode(T.self, from: data)
+                    completion(.success(decodedObject))
+                } catch {
+                    let dataString = String(data: data, encoding: .utf8) ?? "некорректные данные"
+                    print("[objectTask]: Ошибка декодирования - \(error.localizedDescription), Тип: \(T.self), Данные: \(dataString), URL: \(request.url?.absoluteString ?? "")")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("[objectTask]: Ошибка сети - \(error.localizedDescription), Тип: \(T.self), URL: \(request.url?.absoluteString ?? "")")
+                completion(.failure(error))
+            }
+        }
         return task
     }
 }

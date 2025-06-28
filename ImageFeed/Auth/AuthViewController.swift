@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
@@ -46,12 +47,30 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
+    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
+        print("Получен code: \(code)")
+        vc.dismiss(animated: true) {
+            UIBlockingProgressHUD.show()
+            self.delegate?.authViewController(self, didAuthenticateWithCode: code)
+        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        UIBlockingProgressHUD.dismiss()
         vc.dismiss(animated: true)
     }
     
+}
+
+extension AuthViewController {
+    func showAuthErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Ок", style: .default))
+        self.present(alert, animated: true)
+    }
 }

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     
@@ -15,6 +17,7 @@ final class ProfileViewController: UIViewController {
     private let labelLogin = UILabel()
     private let labelDescription = UILabel()
     private let buttonExit = UIButton(type: .system)
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -25,12 +28,28 @@ final class ProfileViewController: UIViewController {
         setupLoginLabel()
         setupDescriptionLabel()
         setupButtonExit()
+        
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
-
+    
     // MARK: - Private methods
     private func setupProfileImage() {
         let profileImage = UIImage(resource: .photo)
         imageView.image = profileImage
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 35
+        imageView.layer.masksToBounds = true
+        imageView.backgroundColor = .clear
         
         view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +107,7 @@ final class ProfileViewController: UIViewController {
     private func setupButtonExit() {
         buttonExit.setImage(UIImage(resource: .exit), for: .normal)
         buttonExit.tintColor = .ypRed
+        buttonExit.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
         
         view.addSubview(buttonExit)
         buttonExit.translatesAutoresizingMaskIntoConstraints = false
@@ -99,5 +119,33 @@ final class ProfileViewController: UIViewController {
             buttonExit.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45)
         ])
     }
+    
+    private func updateProfileDetails(profile: Profile) {
+        labelName.text = profile.name
+        labelLogin.text = profile.loginName
+        labelDescription.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        imageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(resource: .photo),
+            options: [.transition(.fade(0.2))]
+        )
+    }
+    
+    @objc private func didTapExitButton() {
+        KeychainWrapper.standard.removeObject(forKey: "OAuthToken")
+        
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Ошибка")
+            return
+        }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
+    }
 }
-
