@@ -28,7 +28,7 @@ final class ImagesListService {
         }
         
         var request = URLRequest(url: url)
-        request.setValue("Xj0Q268920Nm15bC6uQNiDujq72FlJOptNbi6qAofgc", forHTTPHeaderField: "Authorization")
+        request.setValue("Client-ID Xj0Q268920Nm15bC6uQNiDujq72FlJOptNbi6qAofgc", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 // MARK: - SingleImageViewController
 final class SingleImageViewController: UIViewController {
@@ -18,10 +19,14 @@ final class SingleImageViewController: UIViewController {
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
-            imageView.image = image
-            imageView.contentMode = .scaleAspectFit
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
+            displayImage(image)
+        }
+    }
+    
+    var imageURL: URL? {
+        didSet {
+            guard isViewLoaded, image == nil, let url = imageURL else { return }
+            loadImage(from: url)
         }
     }
     
@@ -31,15 +36,44 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-        guard let image else {
-            return
+        if let image = image {
+            displayImage(image)
+        } else if let url = imageURL {
+            loadImage(from: url)
         }
+    }
         
+    private func displayImage(_ image: UIImage) {
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
+    }
+    
+    private func loadImage(from url: URL) {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(indicator)
         
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
+        ])
+        
+        indicator.startAnimating()
+        
+        imageView.kf.setImage(with: url, placeholder: nil, options: nil) { [weak self] result in
+            DispatchQueue.main.async {
+                indicator.removeFromSuperview()
+                switch result {
+                case .success(let value):
+                    self?.displayImage(value.image)
+                case .failure(let error):
+                    print("Ошибка загрузки изображения: \(error)")
+        
+                }
+            }
+        }
     }
     
     // MARK: - Private methods
@@ -62,7 +96,8 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - IBActions
     @IBAction private func didTapShareButton(_ sender: UIButton) {
-        guard let image else { return }
+        print("Share button tapped")
+        guard let image = imageView.image else { return }
         let share = UIActivityViewController(
             activityItems: [image],
             applicationActivities: nil
