@@ -16,6 +16,7 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet weak var cellLikeButton: UIButton!
     
     var onImageLoad: (() -> Void)?
+    weak var delegate: ImagesListCellDelegate?
     
     func configure(with photo: Photo, dateFormatter: DateFormatter) {
         
@@ -43,6 +44,11 @@ final class ImagesListCell: UITableViewCell {
         }
     }
     
+    func setIsLiked(_ isLiked: Bool) {
+        let likeImage = isLiked ? UIImage(named: "Active") : UIImage(named: "noActive")
+        cellLikeButton.setImage(likeImage, for: .normal)
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         
@@ -52,4 +58,12 @@ final class ImagesListCell: UITableViewCell {
         cellLikeButton.setImage(nil, for: .normal)
         onImageLoad = nil
     }
+    
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+}
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
 }

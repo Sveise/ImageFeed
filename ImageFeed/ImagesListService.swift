@@ -57,6 +57,52 @@ final class ImagesListService {
             }
         }.resume()
     }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(OAuth2TokenStorage.shared.token ?? "")", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else { return }
+            
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                let oldPhoto = self.photos[index]
+                let newPhoto = Photo(
+                    id: oldPhoto.id,
+                    size: oldPhoto.size,
+                    createdAt: oldPhoto.createdAt,
+                    welcomeDescription: oldPhoto.welcomeDescription,
+                    thumbImageURL: oldPhoto.thumbImageURL,
+                    largeImageURL: oldPhoto.largeImageURL,
+                    isLiked: !oldPhoto.isLiked
+                )
+                self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: Self.didChangeNotification, object: self)
+                    completion(.success(()))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(domain: "", code: 404, userInfo: [NSLocalizedDescriptionKey: "Photo not found"])))
+                }
+            }
+        }.resume()
+    }
 }
 
 struct Photo {
@@ -111,3 +157,10 @@ extension PhotoResult {
     }
 }
 
+extension Array {
+    func withReplaced(itemAt index: Int, newValue: Element) -> [Element] {
+        var newArray = self
+        newArray[index] = newValue
+        return newArray
+    }
+}
