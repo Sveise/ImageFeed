@@ -18,6 +18,17 @@ final class ImagesListCell: UITableViewCell {
     var onImageLoad: (() -> Void)?
     weak var delegate: ImagesListCellDelegate?
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        cellImageView.isUserInteractionEnabled = true
+        cellImageView.addGestureRecognizer(tapRecognizer)
+    }
+    
+    @objc private func imageTapped() {
+        delegate?.imageListCellDidTapImage(self)
+    }
+    
     func configure(with photo: Photo, dateFormatter: DateFormatter) {
         
         if let date = photo.createdAt {
@@ -66,4 +77,5 @@ final class ImagesListCell: UITableViewCell {
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func imageListCellDidTapImage(_ cell: ImagesListCell)
 }

@@ -84,4 +84,8 @@ final class ProfileService {
             bio: result.bio
         )
     }
+    
+    func reset() {
+        profile = nil
+    }
 }

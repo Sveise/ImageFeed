@@ -221,7 +221,7 @@
         <!--Single Image View Controller-->
         <scene sceneID="vzf-B7-8H4">
             <objects>
-                <viewController id="mfL-3I-ZVd" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" id="mfL-3I-ZVd" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PJc-1w-z6D">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

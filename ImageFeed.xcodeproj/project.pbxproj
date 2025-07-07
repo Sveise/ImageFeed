@@ -24,7 +24,7 @@
 
 /* Begin PBXFileReference section */
 		001926E02E00BDBA0071C57A /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0019281C2E12EED30071C57A /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ImageFeedTests.xctest; path = "/Users/svetlanavarenova/projects/ImageFeed/build/Debug-iphoneos/ImageFeed.app/PlugIns/ImageFeedTests.xctest"; sourceTree = "<absolute>"; };
+		001929262E15836B0071C57A /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -74,6 +74,7 @@
 			children = (
 				008634272DBA5EB300E8A836 /* ImageFeed */,
 				001926E02E00BDBA0071C57A /* ImageFeed.app */,
+				001929262E15836B0071C57A /* ImageFeedTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,7 +98,7 @@
 			packageProductDependencies = (
 			);
 			productName = ImageFeedTests;
-			productReference = 0019281C2E12EED30071C57A /* ImageFeedTests.xctest */;
+			productReference = 001929262E15836B0071C57A /* ImageFeedTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		008634242DBA5EB300E8A836 /* ImageFeed */ = {

@@ -42,15 +42,16 @@ final class ImagesListViewController: UIViewController {
     
     @objc private func didReceivePhotosUpdate(_ notification: Notification) {
         let oldCount = photos.count
-        photos = imagesListService.photos
-        let newCount = photos.count
+        let newPhotos = imagesListService.photos
+        let newCount = newPhotos.count
         
         guard newCount > oldCount else {
             return
         }
         let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0)}
+        
         tableView.performBatchUpdates {
-            self.photos = photos
+            self.photos = newPhotos
             tableView.insertRows(at: newIndexPaths, with: .automatic)
         }
     }
@@ -81,7 +82,10 @@ extension ImagesListViewController: UITableViewDataSource {
         imageListCell.configure(with: photo, dateFormatter: dateFormatter)
         imageListCell.delegate = self
         imageListCell.onImageLoad = { [weak self] in
-            self?.tableView.performBatchUpdates(nil)
+            DispatchQueue.main.async {
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            }
         }
         
         return imageListCell
@@ -139,5 +143,15 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
         }
     }
+    
+    func imageListCellDidTapImage(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let vc = storyboard.instantiateViewController(withIdentifier: "SingleImageViewController") as! SingleImageViewController
+        vc.imageURL = URL(string: photo.largeImageURL)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
 }
-

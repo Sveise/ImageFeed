@@ -8,6 +8,8 @@
 import Foundation
 
 final class ImagesListService {
+    static let shared = ImagesListService()
+    
     static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
     
     private(set) var photos: [Photo] = []
@@ -102,6 +104,11 @@ final class ImagesListService {
                 }
             }
         }.resume()
+    }
+    
+    func reset() {
+        photos = []
+        lastLoadedPage = nil
     }
 }
 

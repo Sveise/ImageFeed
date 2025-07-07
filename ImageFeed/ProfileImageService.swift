@@ -62,10 +62,16 @@ final class ProfileImageService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let token = OAuth2TokenStorage().token
+        let token = OAuth2TokenStorage.shared.token
         if let token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        } else {
+            print("[ProfileImageService]: Токен отсутствует в OAuth2TokenStorage.shared")
         }
         return request
+    }
+    
+    func reset() {
+        avatarURL = nil
     }
 }
