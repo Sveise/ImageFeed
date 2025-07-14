@@ -7,6 +7,28 @@
 
 import Foundation
 
+// MARK: - Constants
+
+private enum APIConstants {
+    static let accessKey = "Xj0Q268920Nm15bC6uQNiDujq72FlJOptNbi6qAofgc"
+    static let baseURL = "https://api.unsplash.com"
+    static let photosPath = "/photos"
+    static let likePathSuffix = "/like"
+    static let authorizationHeader = "Authorization"
+    static let clientIDPrefix = "Client-ID"
+    static let bearerPrefix = "Bearer"
+}
+
+// MARK: - HTTP Methods
+
+private enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case delete = "DELETE"
+}
+
+// MARK: - ImagesListService
+
 final class ImagesListService {
     static let shared = ImagesListService()
     
@@ -17,20 +39,27 @@ final class ImagesListService {
     private var isFetching = false
     private let perPage = 10
     
+    private let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+    
     func fetchPhotosNextPage() {
         guard !isFetching else { return }
         
         isFetching = true
         let nextPage = (lastLoadedPage ?? 0) + 1
         
-        let urlString = "https://api.unsplash.com/photos?page=\(nextPage)&per_page=\(perPage)"
+        let urlString = "\(APIConstants.baseURL)\(APIConstants.photosPath)?page=\(nextPage)&per_page=\(perPage)"
         guard let url = URL(string: urlString) else {
             isFetching = false
             return
         }
         
         var request = URLRequest(url: url)
-        request.setValue("Client-ID Xj0Q268920Nm15bC6uQNiDujq72FlJOptNbi6qAofgc", forHTTPHeaderField: "Authorization")
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.setValue("\(APIConstants.clientIDPrefix) \(APIConstants.accessKey)", forHTTPHeaderField: APIConstants.authorizationHeader)
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
@@ -44,7 +73,7 @@ final class ImagesListService {
             
             guard
                 let data = data,
-                let photoResults = try? JSONDecoder().decode([PhotoResult].self, from: data)
+                let photoResults = try? self.decoder.decode([PhotoResult].self, from: data)
             else {
                 print("Failed to decode photo results")
                 return
@@ -61,18 +90,19 @@ final class ImagesListService {
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+        let urlString = "\(APIConstants.baseURL)\(APIConstants.photosPath)/\(photoId)\(APIConstants.likePathSuffix)"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = isLike ? "POST" : "DELETE"
-        request.setValue("Bearer \(OAuth2TokenStorage.shared.token ?? "")", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
+        let token = OAuth2TokenStorage.shared.token ?? ""
+        request.setValue("\(APIConstants.bearerPrefix) \(token)", forHTTPHeaderField: APIConstants.authorizationHeader)
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let self else { return }
+            guard let self = self else { return }
             
             if let error = error {
                 DispatchQueue.main.async {
@@ -112,35 +142,7 @@ final class ImagesListService {
     }
 }
 
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-}
-
-struct PhotoResult: Decodable {
-    let id: String
-    let createdAt: String?
-    let width: Int
-    let height: Int
-    let description: String?
-    let likedByUser: Bool
-    let urls: UrlsResult
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case createdAt = "created_at"
-        case width
-        case height
-        case description
-        case likedByUser = "liked_by_user"
-        case urls
-    }
-}
+// MARK: - Photo Conversion
 
 struct UrlsResult: Decodable {
     let thumb: String
@@ -161,13 +163,5 @@ extension PhotoResult {
             largeImageURL: urls.full,
             isLiked: likedByUser
         )
-    }
-}
-
-extension Array {
-    func withReplaced(itemAt index: Int, newValue: Element) -> [Element] {
-        var newArray = self
-        newArray[index] = newValue
-        return newArray
     }
 }
