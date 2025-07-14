@@ -141,11 +141,18 @@ final class ProfileViewController: UIViewController {
     @objc private func didTapExitButton() {
         KeychainWrapper.standard.removeObject(forKey: "OAuthToken")
         
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Ошибка")
-            return
-        }
-        let splashViewController = SplashViewController()
-        window.rootViewController = splashViewController
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else { return }
+            let splashViewController = SplashViewController()
+            window.rootViewController = splashViewController
+        })
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        present(alert, animated: true)
     }
 }
