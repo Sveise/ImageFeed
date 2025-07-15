@@ -47,11 +47,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         })
     }
     
-//    private func updateProgress() {
-//        progressView.progress = Float(webView.estimatedProgress)
-//        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-//    }
-    
     func setProgressValue(_ newValue: Float) {
         progressView.progress = newValue
     }
@@ -59,27 +54,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
     }
-    
-//    private func loadAuthRequest() {
-//        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-//            print("Ошибка. Не удалось создать URLComponents")
-//            return
-//        }
-//        urlComponents.queryItems = [
-//            URLQueryItem(name: "client_id", value: Constants.accessKey),
-//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-//            URLQueryItem(name: "response_type", value: "code"),
-//            URLQueryItem(name: "scope", value: Constants.accessScope)
-//        ]
-//        guard let url = urlComponents.url else {
-//            print("Ошибка")
-//            return
-//        }
-//        let request = URLRequest(url: url)
-//        webView.load(request)
-//        
-//        updateProgress()
-//    }
     
     func load(request: URLRequest) {
         webView.load(request)
