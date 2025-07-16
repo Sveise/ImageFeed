@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ProfileServiceProtocol {
+    var profile: Profile? { get }
+}
+
 struct Profile {
     let username: String
     let name: String
@@ -30,7 +34,7 @@ struct ProfileResult: Codable {
     }
 }
 
-final class ProfileService {
+final class ProfileService: ProfileServiceProtocol {
     static let shared = ProfileService()
     
     private var task: URLSessionTask?

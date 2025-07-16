@@ -210,7 +210,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="pla-Gc-mst"/>
                     <navigationItem key="navigationItem" id="K4S-IW-RHN"/>
                     <connections>
-                        <outlet property="tableView" destination="wlr-Vi-mZa" id="xu8-IQ-D2G"/>
+                        <outlet property="tableView" destination="wlr-Vi-mZa" id="6ne-Bm-hD5"/>
                         <segue destination="mfL-3I-ZVd" kind="presentation" identifier="ShowSingleImage" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="eBh-N6-XXN"/>
                     </connections>
                 </viewController>
