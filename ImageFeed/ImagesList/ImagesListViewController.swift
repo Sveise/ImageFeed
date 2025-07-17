@@ -9,11 +9,11 @@ import UIKit
 import Kingfisher
 
 final class ImagesListViewController: UIViewController, ImagesListViewProtocol {
-
+    
     @IBOutlet private weak var tableView: UITableView!
-
+    
     var presenter: ImagesListPresenterProtocol!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,12 +25,10 @@ final class ImagesListViewController: UIViewController, ImagesListViewProtocol {
         setupTableView()
         presenter.viewDidLoad()
     }
-
+    
     func updateTableView(oldCount: Int, newCount: Int) {
-        let newIndexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-        tableView.performBatchUpdates {
-            tableView.insertRows(at: newIndexPaths, with: .automatic)
-        }
+        if oldCount == newCount { return }
+        tableView.reloadData()
     }
     
     func showLikeError() {
@@ -83,7 +81,6 @@ extension ImagesListViewController: UITableViewDataSource {
                 self?.tableView.endUpdates()
             }
         }
-        
         return cell
     }
 }

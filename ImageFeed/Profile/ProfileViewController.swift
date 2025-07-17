@@ -60,6 +60,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
         view.addSubview(labelName)
         labelName.translatesAutoresizingMaskIntoConstraints = false
+        labelName.accessibilityIdentifier = "labelName"
         
         NSLayoutConstraint.activate([
             labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
@@ -74,6 +75,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
         view.addSubview(labelLogin)
         labelLogin.translatesAutoresizingMaskIntoConstraints = false
+        labelLogin.accessibilityIdentifier = "labelLogin"
         
         NSLayoutConstraint.activate([
             labelLogin.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8),
@@ -102,6 +104,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
         view.addSubview(buttonExit)
         buttonExit.translatesAutoresizingMaskIntoConstraints = false
+        buttonExit.accessibilityIdentifier = "exitButton"
         
         NSLayoutConstraint.activate([
             buttonExit.widthAnchor.constraint(equalToConstant: 44),
@@ -116,7 +119,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         labelLogin.text = login
         labelDescription.text = bio
     }
-
+    
     func updateAvatar(with url: URL?) {
         imageView.kf.setImage(
             with: url,
@@ -124,7 +127,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             options: [.transition(.fade(0.2))]
         )
     }
-
+    
     func showLogoutAlert() {
         let alert = UIAlertController(
             title: "Пока, пока!",
@@ -141,7 +144,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
         present(alert, animated: true)
     }
-
+    
     
     @objc func didTapExitButton() {
         presenter.didTapLogoutButton()
