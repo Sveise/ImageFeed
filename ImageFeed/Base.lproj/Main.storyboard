@@ -46,6 +46,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNH-v1-3Y4" userLabel="Login Button">
                                 <rect key="frame" x="16" y="784" width="408" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="2aZ-xN-G1n"/>
                                 </constraints>
@@ -84,12 +85,12 @@
         <!--Web View View Controller-->
         <scene sceneID="hNk-Bl-qu6">
             <objects>
-                <viewController id="M0w-9J-FrQ" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="UnsplashWebView" storyboardIdentifier="WebViewViewController" id="M0w-9J-FrQ" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sGp-cZ-Jbv">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKl-6v-MQc">
+                            <wkWebView contentMode="scaleToFill" restorationIdentifier="UnsplashWebView" translatesAutoresizingMaskIntoConstraints="NO" id="aKl-6v-MQc">
                                 <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
@@ -159,7 +160,7 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vnE-g6-iBf" userLabel="likeButton">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vnE-g6-iBf">
                                                     <rect key="frame" x="380" y="4" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="c0Y-cu-oZn"/>
@@ -210,7 +211,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="pla-Gc-mst"/>
                     <navigationItem key="navigationItem" id="K4S-IW-RHN"/>
                     <connections>
-                        <outlet property="tableView" destination="wlr-Vi-mZa" id="xu8-IQ-D2G"/>
+                        <outlet property="tableView" destination="wlr-Vi-mZa" id="6ne-Bm-hD5"/>
                         <segue destination="mfL-3I-ZVd" kind="presentation" identifier="ShowSingleImage" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="eBh-N6-XXN"/>
                     </connections>
                 </viewController>
@@ -254,6 +255,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbd-0B-ldr" userLabel="Back Button">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="nav back button white"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="jQy-he-915"/>
                                     <constraint firstAttribute="width" constant="48" id="xYk-hu-wbK"/>
@@ -286,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9NU-mF-hTY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1349" y="268"/>
+            <point key="canvasLocation" x="1348.6363636363637" y="267.9916317991632"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Vwx-HD-H5f">

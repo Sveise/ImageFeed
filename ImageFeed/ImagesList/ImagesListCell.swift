@@ -10,7 +10,7 @@ import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
-
+    
     private enum Constants {
         static let likedImageName = "Active"
         static let unlikedImageName = "noActive"
@@ -25,6 +25,7 @@ final class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        cellLikeButton.accessibilityIdentifier = "likeButton" 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         cellImageView.isUserInteractionEnabled = true
         cellImageView.addGestureRecognizer(tapRecognizer)
@@ -41,9 +42,9 @@ final class ImagesListCell: UITableViewCell {
             cellDateLabel.text = ""
         }
         
+        setIsLiked(photo.isLiked)
         let likeImage = UIImage(named: photo.isLiked ? Constants.likedImageName : Constants.unlikedImageName)
         cellLikeButton.setImage(likeImage, for: .normal)
-        
         cellImageView.kf.indicatorType = .activity
         let placeholder = UIImage(named: "stub")
         
@@ -65,6 +66,8 @@ final class ImagesListCell: UITableViewCell {
     func setIsLiked(_ isLiked: Bool) {
         let likeImage = UIImage(named: isLiked ? Constants.likedImageName : Constants.unlikedImageName)
         cellLikeButton.setImage(likeImage, for: .normal)
+        cellLikeButton.accessibilityIdentifier = "likeButton"
+        cellLikeButton.accessibilityValue = isLiked ? "Active" : "noActive"
     }
     
     override func prepareForReuse() {

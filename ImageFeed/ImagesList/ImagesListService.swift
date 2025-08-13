@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - Constants
-
 private enum APIConstants {
     static let accessKey = "Xj0Q268920Nm15bC6uQNiDujq72FlJOptNbi6qAofgc"
     static let baseURL = "https://api.unsplash.com"
@@ -19,15 +17,11 @@ private enum APIConstants {
     static let bearerPrefix = "Bearer"
 }
 
-// MARK: - HTTP Methods
-
 private enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
     case delete = "DELETE"
 }
-
-// MARK: - ImagesListService
 
 final class ImagesListService {
     static let shared = ImagesListService()
@@ -141,8 +135,6 @@ final class ImagesListService {
         lastLoadedPage = nil
     }
 }
-
-// MARK: - Photo Conversion
 
 struct UrlsResult: Decodable {
     let thumb: String

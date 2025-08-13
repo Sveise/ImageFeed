@@ -9,7 +9,8 @@ import UIKit
 import Kingfisher
 import SwiftKeychainWrapper
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    private var presenter: ProfilePresenterProtocol!
     
     // MARK: - Properties
     private let imageView = UIImageView()
@@ -28,17 +29,7 @@ final class ProfileViewController: UIViewController {
         setupLoginLabel()
         setupDescriptionLabel()
         setupButtonExit()
-        
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
-                guard let self else { return }
-                self.updateAvatar()
-            }
-        updateAvatar()
+        presenter.viewDidLoad()
     }
     
     // MARK: - Private methods
@@ -69,6 +60,7 @@ final class ProfileViewController: UIViewController {
         
         view.addSubview(labelName)
         labelName.translatesAutoresizingMaskIntoConstraints = false
+        labelName.accessibilityIdentifier = "labelName"
         
         NSLayoutConstraint.activate([
             labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
@@ -83,6 +75,7 @@ final class ProfileViewController: UIViewController {
         
         view.addSubview(labelLogin)
         labelLogin.translatesAutoresizingMaskIntoConstraints = false
+        labelLogin.accessibilityIdentifier = "labelLogin"
         
         NSLayoutConstraint.activate([
             labelLogin.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8),
@@ -111,6 +104,7 @@ final class ProfileViewController: UIViewController {
         
         view.addSubview(buttonExit)
         buttonExit.translatesAutoresizingMaskIntoConstraints = false
+        buttonExit.accessibilityIdentifier = "exitButton"
         
         NSLayoutConstraint.activate([
             buttonExit.widthAnchor.constraint(equalToConstant: 44),
@@ -120,17 +114,13 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateProfileDetails(profile: Profile) {
-        labelName.text = profile.name
-        labelLogin.text = profile.loginName
-        labelDescription.text = profile.bio
+    func updateProfile(name: String, login: String, bio: String) {
+        labelName.text = name
+        labelLogin.text = login
+        labelDescription.text = bio
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar(with url: URL?) {
         imageView.kf.setImage(
             with: url,
             placeholder: UIImage(resource: .photo),
@@ -138,21 +128,32 @@ final class ProfileViewController: UIViewController {
         )
     }
     
-    @objc private func didTapExitButton() {
-        KeychainWrapper.standard.removeObject(forKey: "OAuthToken")
-        
+    func showLogoutAlert() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены что хотите выйти?",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Да", style: .default) { _ in
+            KeychainWrapper.standard.removeObject(forKey: "OAuthToken")
             ProfileLogoutService.shared.logout()
             guard let window = UIApplication.shared.windows.first else { return }
             let splashViewController = SplashViewController()
             window.rootViewController = splashViewController
         })
-        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
         present(alert, animated: true)
+    }
+    
+    
+    @objc func didTapExitButton() {
+        presenter.didTapLogoutButton()
+    }
+}
+
+extension ProfileViewController {
+    func configure(with presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        self.presenter.view = self
     }
 }
