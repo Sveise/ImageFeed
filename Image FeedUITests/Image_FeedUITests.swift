@@ -7,7 +7,7 @@
 
 import XCTest
 
-class Image_FeedUITests: XCTestCase {
+final class Image_FeedUITests: XCTestCase {
     private let app = XCUIApplication()
     
     override func setUpWithError() throws {
@@ -23,12 +23,12 @@ class Image_FeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 10))
         loginTextField.tap()
-        loginTextField.typeText("логин")
+        loginTextField.typeText("sveise@mail.ru")
         webView.swipeUp()
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
-        UIPasteboard.general.string = "пароль"
+        UIPasteboard.general.string = "F0rward1try"
         passwordTextField.doubleTap()
         if app.menuItems["Paste"].exists {
             app.menuItems["Paste"].tap()
